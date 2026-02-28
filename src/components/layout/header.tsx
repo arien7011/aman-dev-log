@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X, Github, Linkedin, Moon, Sun } from 'lucide-react';
@@ -19,13 +20,22 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">
-            AM
-          </span>
-          <span className="hidden font-semibold text-gray-900 dark:text-white sm:inline-block">
-            Aman Mishra
-          </span>
+        <Link
+          href="/"
+          className="flex items-center"
+          aria-label="Aman Mishra — Home"
+        >
+
+          
+          <Image
+            src="/assets/images/blog-app-logo.png"
+            alt="Aman Dev Blog logo"
+            width={2912}
+            height={1472}
+            priority
+            quality={100}
+            className="h-14 w-auto object-contain drop-shadow-md transition-all duration-300 ease-out hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(13,148,136,0.6)] active:scale-95"
+          />
         </Link>
 
         {/* Desktop Navigation */}

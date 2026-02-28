@@ -37,7 +37,7 @@ export const siteConfig = {
 export const authorConfig: Author = {
   id: "1",
   name: "Aman Mishra",
-  avatar: "/images/avatar.jpg",
+  avatar: "/assets/images/avatar_image.jpg",
   bio: "Frontend Engineer with 3.9+ years of experience building scalable, high-performance web applications using React, Angular, and TypeScript. Passionate about creating exceptional user experiences, optimizing performance, and implementing SSR/SEO best practices.",
   email: "amanmishra01234@gmail.com",
   social: {

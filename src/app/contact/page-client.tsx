@@ -27,7 +27,7 @@ const contactInfo = [
   {
     icon: MapPin,
     label: 'Location',
-    value: 'Hyderabad, India',
+    value: 'Delhi, India',
     href: null,
   },
   {
@@ -57,12 +57,12 @@ const socialLinks = [
     href: siteConfig.links.linkedin,
     color: 'hover:text-blue-600',
   },
-  {
-    icon: Twitter,
-    label: 'Twitter',
-    href: siteConfig.links.twitter,
-    color: 'hover:text-sky-500',
-  },
+  // {
+  //   icon: Twitter,
+  //   label: 'Twitter',
+  //   href: siteConfig.links.twitter,
+  //   color: 'hover:text-sky-500',
+  // },
 ];
 
 const services = [
@@ -127,8 +127,9 @@ export function ContactPageClient() {
         </div>
         
         {/* Main Content */}
-        <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_400px]">
-          {/* Contact Form */}
+        <div className="mt-12">
+          {/* Contact Form — temporarily disabled until email integration is implemented */}
+          {/*
           <Card className="p-8">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               Send a Message
@@ -136,114 +137,12 @@ export function ContactPageClient() {
             <p className="mt-2 text-gray-600 dark:text-gray-400">
               Fill out the form below and I&apos;ll get back to you as soon as possible.
             </p>
-            
-            {isSubmitted ? (
-              <div className="mt-8 flex flex-col items-center justify-center rounded-lg bg-teal-50 py-12 dark:bg-teal-900/20">
-                <CheckCircle2 className="h-16 w-16 text-teal-500" />
-                <h3 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">
-                  Message Sent!
-                </h3>
-                <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
-                  Thank you for reaching out. I&apos;ll respond within 24-48 hours.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      Name
-                    </label>
-                    <Input
-                      id="name"
-                      placeholder="John Doe"
-                      {...register('name')}
-                      aria-invalid={!!errors.name}
-                    />
-                    {errors.name && (
-                      <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
-                    )}
-                  </div>
-                  
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      {...register('email')}
-                      aria-invalid={!!errors.email}
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
-                    )}
-                  </div>
-                </div>
-                
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Subject
-                  </label>
-                  <Input
-                    id="subject"
-                    placeholder="Project Inquiry"
-                    {...register('subject')}
-                    aria-invalid={!!errors.subject}
-                  />
-                  {errors.subject && (
-                    <p className="mt-1 text-sm text-red-500">{errors.subject.message}</p>
-                  )}
-                </div>
-                
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    placeholder="Tell me about your project..."
-                    rows={6}
-                    {...register('message')}
-                    aria-invalid={!!errors.message}
-                  />
-                  {errors.message && (
-                    <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>
-                  )}
-                </div>
-                
-                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
-              </form>
-            )}
+            ...
           </Card>
-          
+          */}
+
           {/* Sidebar */}
-          <div className="space-y-8">
+          <div className="mx-auto max-w-lg space-y-8">
             {/* Contact Info */}
             <Card className="p-6">
               <h3 className="font-semibold text-gray-900 dark:text-white">

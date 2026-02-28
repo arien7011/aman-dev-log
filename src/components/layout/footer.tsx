@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Github, Linkedin, Mail, Heart } from 'lucide-react';
 import { siteConfig, footerNavItems } from '@/config/site';
 
@@ -11,13 +12,15 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="inline-flex items-center space-x-2">
-              <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">
-                AM
-              </span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                Aman Mishra
-              </span>
+            <Link href="/" className="inline-flex items-center" aria-label="Aman Mishra — Home">
+              <Image
+                src="/assets/images/blog-app-logo.png"
+                alt="Aman Dev Blog logo"
+                width={2912}
+                height={1472}
+                quality={100}
+                className="h-12 w-auto object-contain drop-shadow-md transition-all duration-300 ease-out hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(13,148,136,0.6)] active:scale-95"
+              />
             </Link>
             <p className="mt-4 max-w-md text-sm text-gray-600 dark:text-gray-400">
               Frontend Engineer passionate about building scalable, high-performance

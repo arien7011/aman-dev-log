@@ -162,3 +162,26 @@ export interface SEOMetadata {
   canonical?: string;
   noIndex?: boolean;
 }
+
+// ----------------------------------------------------------------
+// Admin / Blog Editor Types
+// ----------------------------------------------------------------
+
+/** A blog post as stored in the database, including admin-only fields. */
+export interface AdminBlogPost extends BlogPost {
+  status: 'draft' | 'published';
+  category: Category & { slug: string };
+}
+
+/** Payload for creating or updating a blog post via the API. */
+export interface BlogPostInput {
+  title: string;
+  content: string;
+  excerpt: string;
+  coverImage?: string;
+  tags: string[];
+  category: string;
+  status: 'draft' | 'published';
+  featured?: boolean;
+}
+

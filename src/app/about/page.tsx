@@ -15,35 +15,23 @@ export const metadata: Metadata = generateSEOMetadata({
 const experiences = [
   {
     id: '1',
-    company: 'Company',
+    company: 'Taazaa Tech Pvt. Ltd',
     position: 'Software Engineer',
-    location: 'Hyderabad, India',
-    startDate: 'Jul 2023',
+    location: 'Noida, India',
+    startDate: 'Mar 2022',
     endDate: 'Present',
     description: [
-      'Led the development of TOKE platform using Angular and RxJS, implementing complex state management patterns',
-      'Designed and integrated Ethereum wallet connectivity using ethers.js for secure crypto transactions',
-      'Built responsive data tables with advanced filtering, sorting, and pagination for handling large datasets',
-      'Optimized application performance achieving 40% improvement in load times through lazy loading and code splitting',
-      'Mentored 3 junior developers and conducted code reviews to maintain high code quality standards',
+      'Architected and developed multi-tenant e-commerce platforms using React 18, Next.js (SSR/SSG), Express, and MongoDB, serving 200K+ monthly users.',
+      'Implemented SSR and SEO optimization with Next.js and Angular Universal, increasing organic traffic by ~20% and improving Core Web Vitals scores.',
+      'Reduced bundle size and improved Time-to-Interactive by ~40% using dynamic imports, lazy loading, and code splitting strategies.',
+      'Built real-time dispatch and driver-support systems using Socket.IO and SignalR, improving operational response time by 30%.',
+      'Designed scalable admin dashboards with React and Highcharts, enabling operational analytics across multiple business units.',
+      'Engineered secure payment integrations (Stripe, Fluidpay) with hardened backend validation using Node.js and Express.',
+      'Refactored Angular application from v12 to v16, improving maintainability and achieving 30% improvement in application stability.',
+      'Implemented CI/CD pipelines with GitHub Actions, Docker, and AWS for production-grade release automation.',
+      'Mentored junior engineers and enforced frontend architecture standards across the team.',
     ],
-    technologies: ['Angular', 'RxJS', 'TypeScript', 'Ethers.js', 'Tailwind CSS'],
-  },
-  {
-    id: '2',
-    company: 'Company',
-    position: 'Junior Software Engineer',
-    location: 'Hyderabad, India',
-    startDate: 'Jun 2021',
-    endDate: 'Jul 2023',
-    description: [
-      'Developed multiple enterprise React applications with Redux for state management',
-      'Created reusable component libraries that reduced development time by 30%',
-      'Implemented RESTful API integrations with Axios and optimized data fetching strategies',
-      'Collaborated with UX designers to implement pixel-perfect responsive designs',
-      'Participated in agile ceremonies and contributed to sprint planning and estimations',
-    ],
-    technologies: ['React', 'Redux', 'JavaScript', 'Material-UI', 'REST APIs'],
+    technologies: ['React 18', 'Next.js', 'Angular', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Socket.IO', 'Redux', 'NgRx', 'Docker', 'AWS', 'GitHub Actions'],
   },
 ];
 
@@ -52,8 +40,8 @@ const education = [
     institution: 'Dr. A.P.J Abdul Kalam Technical University',
     degree: 'Bachelor of Technology',
     field: 'Computer Science and Engineering',
-    year: '2017 - 2021',
-    grade: '7.0 CGPA',
+    year: '2018 - 2022',
+    grade: '8.5 CGPA',
   },
 ];
 
@@ -96,15 +84,16 @@ export default function AboutPage() {
               Hi, I&apos;m {siteConfig.author.name}
             </h1>
             <p className="mt-6 text-lg text-gray-600 dark:text-gray-400">
-              A passionate Frontend Engineer with {siteConfig.author.experience} of experience 
-              building high-performance, user-centric web applications. I specialize in 
-              React, Angular, and modern JavaScript ecosystems, with a strong focus on 
-              clean code and exceptional user experiences.
+              A <strong className="text-gray-900 dark:text-white">Frontend-Focused Full Stack Engineer</strong> with{' '}
+              {siteConfig.author.experience} of experience building production-grade MERN/MEAN stack
+              applications. Specialized in Next.js SSR/SSG, Angular Universal, Core Web Vitals
+              optimization, and real-time systems — with a strong focus on clean architecture and
+              exceptional user experiences.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
               <span className="flex items-center gap-1">
                 <MapPin className="h-4 w-4" />
-                Hyderabad, India
+                Delhi, India
               </span>
               <span className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
@@ -119,7 +108,7 @@ export default function AboutPage() {
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <a href="/resume.pdf" download>
+                <a href="/aman_mishra_resume.pdf" download target="_blank" rel="noopener noreferrer">
                   <Download className="mr-2 h-4 w-4" />
                   Download Resume
                 </a>
@@ -315,7 +304,7 @@ export default function AboutPage() {
             </div>
           </div>
           
-          {/* Certifications */}
+          {/* Certifications — temporarily commented out until verified credentials are added
           <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Certifications</h2>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
@@ -351,6 +340,7 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
+          */}
         </div>
       </section>
       

@@ -92,6 +92,25 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Blocking script: sets .dark class before first paint to prevent theme flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('amandevlog-theme');
+                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var resolved = stored === 'dark' || (!stored && prefersDark) || (stored === 'system' && prefersDark);
+                  if (resolved) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

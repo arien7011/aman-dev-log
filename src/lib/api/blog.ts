@@ -8,6 +8,30 @@ import {
 } from "@/types";
 import { authorConfig } from "@/config/site";
 
+// ----------------------------------------------------------------
+// Helpers
+// ----------------------------------------------------------------
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ??
+  (typeof window === 'undefined' ? 'http://localhost:3000/api' : '/api');
+
+async function apiFetch<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T | null> {
+  try {
+    const url = new URL(`${API_BASE}${path}`, 'http://localhost');
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
+      });
+    }
+    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json as T;
+  } catch {
+    return null;
+  }
+}
+
 // Mock data for blog posts
 const mockCategories: Category[] = [
   {
@@ -186,9 +210,22 @@ const mockPosts: BlogPost[] = [
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const blogApi = {
-  // Get all posts with optional filters
+  // Get all posts with optional filters — real API with mock fallback
   async getPosts(filters?: BlogFilters): Promise<PaginatedResponse<BlogPost>> {
-    await delay(300); // Simulate network delay
+    const params: Record<string, string | number | undefined> = {
+      page: filters?.page,
+      limit: filters?.limit,
+      category: filters?.category,
+      search: filters?.search,
+      sortBy: filters?.sortBy,
+      tag: filters?.tag,
+    };
+
+    const result = await apiFetch<PaginatedResponse<BlogPost>>('/blog', params);
+    if (result) return result;
+
+    // ---- mock fallback (dev / API unreachable) ----
+    await delay(300);
 
     let filteredPosts = [...mockPosts];
 
@@ -251,8 +288,12 @@ export const blogApi = {
     };
   },
 
-  // Get a single post by slug
+  // Get a single post by slug — real API with mock fallback
   async getPost(slug: string): Promise<BlogPost | null> {
+    const result = await apiFetch<{ data: BlogPost }>(`/blog/${slug}`);
+    if (result?.data) return result.data;
+
+    // ---- mock fallback ----
     await delay(200);
     return mockPosts.find((post) => post.slug === slug) || null;
   },
@@ -318,5 +359,12 @@ export const blogApi = {
         post.excerpt.toLowerCase().includes(lowerQuery) ||
         post.tags.some((tag) => tag.name.toLowerCase().includes(lowerQuery))
     );
+  },
+
+  // Get all published slugs for generateStaticParams
+  async getPublishedSlugs(): Promise<string[]> {
+    const result = await apiFetch<PaginatedResponse<BlogPost>>('/blog', { limit: 200 });
+    if (result?.data?.length) return result.data.map((p) => p.slug);
+    return mockPosts.map((p) => p.slug);
   },
 };

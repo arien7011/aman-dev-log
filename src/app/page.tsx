@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Code2, Briefcase, BookOpen, Sparkles, Github, Linkedin, Mail } from 'lucide-react';
 import { Button, Badge, Card, CardContent } from '@/components/ui';
-import { NewsletterForm } from '@/components/shared';
 import { blogApi } from '@/lib/api/blog';
 import { projectsApi } from '@/lib/api/projects';
 import { siteConfig, authorConfig } from '@/config/site';
@@ -33,15 +32,25 @@ export default async function HomePage() {
                 <span className="gradient-text">Aman Mishra</span>
               </h1>
               <p className="mt-4 text-xl text-gray-600 dark:text-gray-400 md:text-2xl">
-                Frontend Engineer & Software Developer
+                Frontend-Focused Full Stack Engineer (MEAN / MERN)
               </p>
               <p className="mt-6 max-w-xl text-lg text-gray-600 dark:text-gray-400">
-                Building scalable, high-performance web applications with{' '}
+                I build scalable, high-performance web applications using{' '}
+                <strong className="text-gray-900 dark:text-white">Next.js</strong>,{' '}
                 <strong className="text-gray-900 dark:text-white">React</strong>,{' '}
                 <strong className="text-gray-900 dark:text-white">Angular</strong>,{' '}
-                and{' '}
-                <strong className="text-gray-900 dark:text-white">TypeScript</strong>.
-                Passionate about creating exceptional user experiences and optimizing performance.
+                <strong className="text-gray-900 dark:text-white">TypeScript</strong>,{' '}
+                <strong className="text-gray-900 dark:text-white">Node.js</strong>,{' '}
+                <strong className="text-gray-900 dark:text-white">Express</strong>, and{' '}
+                <strong className="text-gray-900 dark:text-white">MongoDB</strong>.
+              </p>
+              <p className="mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
+                Specialized in{' '}
+                <strong className="text-gray-900 dark:text-white">SSR/SSG</strong> (Next.js &amp; Angular Universal),
+                SEO optimization, state management (Redux, NgRx), and real-time integrations,
+                while delivering robust backend APIs using the{' '}
+                <strong className="text-gray-900 dark:text-white">MERN/MEAN stack</strong>.
+                Passionate about Core Web Vitals, exceptional UX, and production-grade full-stack systems.
               </p>
               
               {/* CTAs */}
@@ -263,15 +272,15 @@ export default async function HomePage() {
               About Me
             </h2>
             <p className="mt-6 text-lg text-gray-600 dark:text-gray-400">
-              I&apos;m a Frontend Engineer with <strong className="text-gray-900 dark:text-white">3.9+ years of experience</strong> building 
-              scalable, high-performance web applications. Currently working at{' '}
-              <strong className="text-gray-900 dark:text-white">Taazaa Tech Pvt Ltd</strong>, 
-              where I lead frontend development for enterprise applications serving 200k+ users.
+              I&apos;m a <strong className="text-gray-900 dark:text-white">Frontend-Focused Full Stack Engineer</strong> with{' '}
+              <strong className="text-gray-900 dark:text-white">3.9+ years of experience</strong> building
+              production-grade MERN/MEAN stack applications. Currently at{' '}
+              <strong className="text-gray-900 dark:text-white">Taazaa Tech Pvt. Ltd</strong>,
+              architecting Next.js SSR platforms and Angular Universal apps serving 200K+ monthly users.
             </p>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              My expertise includes React, Angular, TypeScript, and modern web technologies. 
-              I&apos;m passionate about performance optimization, SSR/SEO best practices, and 
-              creating exceptional user experiences.
+              Expert in Core Web Vitals optimization, SSR/SSG/ISR with Next.js, state management
+              (Redux, NgRx), real-time systems (Socket.IO), and CI/CD pipelines with Docker and AWS.
             </p>
             <div className="mt-8">
               <Button size="lg" asChild>
@@ -329,25 +338,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-2xl rounded-2xl bg-linear-to-br from-teal-600 to-cyan-600 p-8 text-center text-white md:p-12">
-            <h2 className="text-2xl font-bold md:text-3xl">
-              Subscribe to my newsletter
-            </h2>
-            <p className="mt-3 text-teal-100">
-              Get notified about new articles, tutorials, and insights on web development.
-            </p>
-            <div className="mx-auto mt-6 max-w-md">
-              <NewsletterForm variant="inline" />
-            </div>
-            <p className="mt-4 text-xs text-teal-200">
-              No spam, unsubscribe at any time.
-            </p>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }

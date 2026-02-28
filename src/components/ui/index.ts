@@ -62,3 +62,14 @@ export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
 export { Skeleton } from "./skeleton";
 
 export { Avatar, AvatarImage, AvatarFallback } from "./avatar";
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./select";
