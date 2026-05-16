@@ -100,7 +100,7 @@ const blogSchema = new Schema<IBlog>(
 // ----------------------------------------------------------------
 // Pre-save hook: auto-generate slug + calculate reading time
 // ----------------------------------------------------------------
-blogSchema.pre<IBlog>('save', async function (next) {
+blogSchema.pre<IBlog>('save', async function () {
   // Recalculate reading time whenever content changes
   if (this.isModified('content')) {
     this.readingTime = calculateReadingTime(this.content);
@@ -118,12 +118,10 @@ blogSchema.pre<IBlog>('save', async function (next) {
 
     this.slug = existing ? `${base}-${Date.now().toString(36)}` : base;
   }
-
-  next();
 });
 
 // Also handle findOneAndUpdate so readingTime stays accurate on PUT calls
-blogSchema.pre('findOneAndUpdate', function (next) {
+blogSchema.pre('findOneAndUpdate', function () {
   const update = this.getUpdate() as Partial<IBlog> & { $set?: Partial<IBlog> };
   const content = update?.content ?? update?.$set?.content;
   if (content) {
@@ -134,7 +132,6 @@ blogSchema.pre('findOneAndUpdate', function (next) {
       (update as Record<string, unknown>).readingTime = rt;
     }
   }
-  next();
 });
 
 // ----------------------------------------------------------------

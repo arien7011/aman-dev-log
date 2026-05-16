@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db/mongoose';
+import { isDatabaseUnavailableError } from '@/lib/db/errors';
 import Blog from '@/models/Blog';
 import { verifyAdminRequest } from '@/lib/auth/admin';
+import { getMockPaginatedPosts } from '@/lib/api/blog';
 import { blogDocToPost } from '@/lib/api/transform';
 import { authorConfig } from '@/config/site';
 import type { PaginatedResponse, BlogPost } from '@/types';
@@ -10,15 +12,15 @@ import type { PaginatedResponse, BlogPost } from '@/types';
 // GET /api/blog — public, returns published posts with pagination
 // ----------------------------------------------------------------
 export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
+  const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') ?? '9', 10)));
+  const category = searchParams.get('category') ?? '';
+  const search = searchParams.get('search') ?? '';
+  const sortBy = (searchParams.get('sortBy') ?? 'newest') as 'newest' | 'oldest' | 'popular';
+
   try {
     await connectDB();
-
-    const { searchParams } = request.nextUrl;
-    const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
-    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') ?? '9', 10)));
-    const category = searchParams.get('category') ?? '';
-    const search = searchParams.get('search') ?? '';
-    const sortBy = (searchParams.get('sortBy') ?? 'newest') as 'newest' | 'oldest' | 'popular';
 
     // Build filter
     const filter: Record<string, unknown> = { status: 'published' };
@@ -61,6 +63,18 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ success: true, ...response });
   } catch (err) {
+    if (isDatabaseUnavailableError(err)) {
+      const fallback = getMockPaginatedPosts({
+        page,
+        limit,
+        category: category || undefined,
+        search: search || undefined,
+        sortBy,
+      });
+
+      return NextResponse.json({ success: true, ...fallback, fallback: true });
+    }
+
     console.error('[GET /api/blog]', err);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
@@ -73,7 +87,7 @@ export async function GET(request: NextRequest) {
 // POST /api/blog — admin only, create a new blog post
 // ----------------------------------------------------------------
 export async function POST(request: NextRequest) {
-  if (!verifyAdminRequest(request)) {
+  if (!(await verifyAdminRequest(request))) {
     return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
   }
 

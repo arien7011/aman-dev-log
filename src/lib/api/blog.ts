@@ -209,6 +209,65 @@ const mockPosts: BlogPost[] = [
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export function getMockPaginatedPosts(filters?: BlogFilters): PaginatedResponse<BlogPost> {
+  let filteredPosts = [...mockPosts];
+
+  if (filters?.category) {
+    filteredPosts = filteredPosts.filter(
+      (post) => post.category.slug === filters.category
+    );
+  }
+
+  if (filters?.tag) {
+    filteredPosts = filteredPosts.filter((post) =>
+      post.tags.some((tag) => tag.slug === filters.tag)
+    );
+  }
+
+  if (filters?.search) {
+    const query = filters.search.toLowerCase();
+    filteredPosts = filteredPosts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(query) ||
+        post.excerpt.toLowerCase().includes(query) ||
+        post.tags.some((tag) => tag.name.toLowerCase().includes(query))
+    );
+  }
+
+  if (filters?.sortBy === 'oldest') {
+    filteredPosts.sort(
+      (a, b) =>
+        new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+    );
+  } else if (filters?.sortBy === 'popular') {
+    filteredPosts.sort((a, b) => (b.views || 0) - (a.views || 0));
+  } else {
+    filteredPosts.sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
+  }
+
+  const page = filters?.page || 1;
+  const limit = filters?.limit || 10;
+  const start = (page - 1) * limit;
+  const end = start + limit;
+
+  return {
+    data: filteredPosts.slice(start, end),
+    pagination: {
+      page,
+      limit,
+      total: filteredPosts.length,
+      totalPages: Math.ceil(filteredPosts.length / limit),
+    },
+  };
+}
+
+export function getMockPostBySlug(slug: string): BlogPost | null {
+  return mockPosts.find((post) => post.slug === slug) || null;
+}
+
 export const blogApi = {
   // Get all posts with optional filters — real API with mock fallback
   async getPosts(filters?: BlogFilters): Promise<PaginatedResponse<BlogPost>> {
@@ -227,65 +286,7 @@ export const blogApi = {
     // ---- mock fallback (dev / API unreachable) ----
     await delay(300);
 
-    let filteredPosts = [...mockPosts];
-
-    // Filter by category
-    if (filters?.category) {
-      filteredPosts = filteredPosts.filter(
-        (post) => post.category.slug === filters.category
-      );
-    }
-
-    // Filter by tag
-    if (filters?.tag) {
-      filteredPosts = filteredPosts.filter((post) =>
-        post.tags.some((tag) => tag.slug === filters.tag)
-      );
-    }
-
-    // Filter by search query
-    if (filters?.search) {
-      const query = filters.search.toLowerCase();
-      filteredPosts = filteredPosts.filter(
-        (post) =>
-          post.title.toLowerCase().includes(query) ||
-          post.excerpt.toLowerCase().includes(query) ||
-          post.tags.some((tag) => tag.name.toLowerCase().includes(query))
-      );
-    }
-
-    // Sort posts
-    if (filters?.sortBy === "oldest") {
-      filteredPosts.sort(
-        (a, b) =>
-          new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
-      );
-    } else if (filters?.sortBy === "popular") {
-      filteredPosts.sort((a, b) => (b.views || 0) - (a.views || 0));
-    } else {
-      // Default: newest first
-      filteredPosts.sort(
-        (a, b) =>
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      );
-    }
-
-    // Pagination
-    const page = filters?.page || 1;
-    const limit = filters?.limit || 10;
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    const paginatedPosts = filteredPosts.slice(start, end);
-
-    return {
-      data: paginatedPosts,
-      pagination: {
-        page,
-        limit,
-        total: filteredPosts.length,
-        totalPages: Math.ceil(filteredPosts.length / limit),
-      },
-    };
+    return getMockPaginatedPosts(filters);
   },
 
   // Get a single post by slug — real API with mock fallback
@@ -295,7 +296,7 @@ export const blogApi = {
 
     // ---- mock fallback ----
     await delay(200);
-    return mockPosts.find((post) => post.slug === slug) || null;
+    return getMockPostBySlug(slug);
   },
 
   // Get featured posts

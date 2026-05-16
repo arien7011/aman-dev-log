@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
   // Set httpOnly admin cookie valid for 7 days
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, signAdminCookie(secret), {
+  cookieStore.set(COOKIE_NAME, await signAdminCookie(secret), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

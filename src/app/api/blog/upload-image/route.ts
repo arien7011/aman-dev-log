@@ -14,7 +14,7 @@ cloudinary.config({
 // Returns: { success: true, url: string }
 // ----------------------------------------------------------------
 export async function POST(request: NextRequest) {
-  if (!verifyAdminRequest(request)) {
+  if (!(await verifyAdminRequest(request))) {
     return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
   }
 

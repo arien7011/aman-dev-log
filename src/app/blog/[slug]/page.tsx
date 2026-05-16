@@ -59,7 +59,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       'table','thead','tbody','tr','th','td',
     ],
     ALLOWED_ATTR: ['href','src','alt','class','target','rel'],
-    FORCE_HTTPS: true,
   });
 
   const relatedPosts = await blogApi.getRelatedPosts(post.id, 3);

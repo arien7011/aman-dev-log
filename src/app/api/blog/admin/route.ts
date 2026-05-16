@@ -10,7 +10,7 @@ import type { PaginatedResponse, BlogPost } from '@/types';
 // Used exclusively by the admin manage page.
 // ----------------------------------------------------------------
 export async function GET(request: NextRequest) {
-  if (!verifyAdminRequest(request)) {
+  if (!(await verifyAdminRequest(request))) {
     return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
   }
 

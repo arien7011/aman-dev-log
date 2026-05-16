@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db/mongoose';
+import { isDatabaseUnavailableError } from '@/lib/db/errors';
 import Blog from '@/models/Blog';
 import { verifyAdminRequest } from '@/lib/auth/admin';
+import { getMockPostBySlug } from '@/lib/api/blog';
 import { blogDocToPost } from '@/lib/api/transform';
 
 interface RouteContext {
@@ -12,10 +14,10 @@ interface RouteContext {
 // GET /api/blog/[slug] — public, fetch single post by slug
 // ----------------------------------------------------------------
 export async function GET(_request: NextRequest, { params }: RouteContext) {
+  const { slug } = await params;
+
   try {
     await connectDB();
-
-    const { slug } = await params;
     const doc = await Blog.findOne({ slug }).lean<
       import('@/models/Blog').IBlog & { _id: unknown; createdAt: Date; updatedAt: Date }
     >();
@@ -32,6 +34,19 @@ export async function GET(_request: NextRequest, { params }: RouteContext) {
 
     return NextResponse.json({ success: true, data: blogDocToPost(doc) });
   } catch (err) {
+    if (isDatabaseUnavailableError(err)) {
+      const fallbackPost = getMockPostBySlug(slug);
+
+      if (!fallbackPost) {
+        return NextResponse.json(
+          { success: false, message: 'Post not found' },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({ success: true, data: fallbackPost, fallback: true });
+    }
+
     console.error('[GET /api/blog/[slug]]', err);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
@@ -44,7 +59,7 @@ export async function GET(_request: NextRequest, { params }: RouteContext) {
 // PUT /api/blog/[slug] — admin only, update a post
 // ----------------------------------------------------------------
 export async function PUT(request: NextRequest, { params }: RouteContext) {
-  if (!verifyAdminRequest(request)) {
+  if (!(await verifyAdminRequest(request))) {
     return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
   }
 
@@ -86,7 +101,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
 // DELETE /api/blog/[slug] — admin only
 // ----------------------------------------------------------------
 export async function DELETE(request: NextRequest, { params }: RouteContext) {
-  if (!verifyAdminRequest(request)) {
+  if (!(await verifyAdminRequest(request))) {
     return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
   }
 
